@@ -13,7 +13,7 @@ interface QueueStats {
 }
 
 // Get BullMQ queue depths
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   let client;
   try {
     const redisHost = process.env.REDIS_HOST || 'localhost';

@@ -34,7 +34,7 @@ router.get('/', async (req: Request, res: Response) => {
 // POST /api/containers/:id/start
 router.post('/:id/start', async (req: Request, res: Response) => {
   try {
-    const result = await containerAction(req.params.id, 'start');
+    const result = await containerAction(String(req.params.id), 'start');
     res.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
@@ -45,7 +45,7 @@ router.post('/:id/start', async (req: Request, res: Response) => {
 // POST /api/containers/:id/stop
 router.post('/:id/stop', async (req: Request, res: Response) => {
   try {
-    const result = await containerAction(req.params.id, 'stop');
+    const result = await containerAction(String(req.params.id), 'stop');
     res.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
@@ -56,7 +56,7 @@ router.post('/:id/stop', async (req: Request, res: Response) => {
 // POST /api/containers/:id/restart
 router.post('/:id/restart', async (req: Request, res: Response) => {
   try {
-    const result = await containerAction(req.params.id, 'restart');
+    const result = await containerAction(String(req.params.id), 'restart');
     res.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
@@ -72,7 +72,7 @@ router.get('/:id/logs', async (req: Request, res: Response) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
 
-    const stream = await streamContainerLogs(req.params.id, (data) => {
+    const stream = await streamContainerLogs(String(req.params.id), (data) => {
       res.write(`data: ${JSON.stringify({ log: data })}\n\n`);
     });
 

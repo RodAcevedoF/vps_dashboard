@@ -7,7 +7,7 @@ const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 export async function listContainers() {
   try {
     const containers = await docker.listContainers({ all: true });
-    return containers.map(container => ({
+    return containers.map((container) => ({
       id: container.Id,
       name: container.Names[0]?.replace(/^\//, '') || '',
       image: container.Image,

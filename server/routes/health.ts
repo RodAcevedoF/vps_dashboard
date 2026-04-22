@@ -6,7 +6,7 @@ import neo4j from 'neo4j-driver';
 const router = express.Router();
 
 // Redis health check
-router.get('/redis', async (req: Request, res: Response) => {
+router.get('/redis', async (_req: Request, res: Response) => {
   let client;
   try {
     const redisHost = process.env.REDIS_HOST || 'localhost';
@@ -42,7 +42,7 @@ router.get('/redis', async (req: Request, res: Response) => {
 });
 
 // PostgreSQL health check
-router.get('/postgres', async (req: Request, res: Response) => {
+router.get('/postgres', async (_req: Request, res: Response) => {
   let pool;
   try {
     const connectionString = process.env.DATABASE_URL ||
@@ -69,7 +69,7 @@ router.get('/postgres', async (req: Request, res: Response) => {
 });
 
 // Neo4j health check
-router.get('/neo4j', async (req: Request, res: Response) => {
+router.get('/neo4j', async (_req: Request, res: Response) => {
   let driver;
   let session;
   try {
