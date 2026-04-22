@@ -1,10 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
 
-export default function authMiddleware(req: Request, res: Response, next: NextFunction) {
+export default function authMiddleware(req: Request, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Missing or invalid authorization header' });
+    res.status(401).json({ error: 'Missing or invalid authorization header' });
+    return;
   }
 
   const token = authHeader.substring(7);
@@ -12,11 +13,13 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
 
   if (!expectedToken) {
     console.error('DASHBOARD_TOKEN not configured');
-    return res.status(500).json({ error: 'Server configuration error' });
+    res.status(500).json({ error: 'Server configuration error' });
+    return;
   }
 
   if (token !== expectedToken) {
-    return res.status(403).json({ error: 'Invalid token' });
+    res.status(403).json({ error: 'Invalid token' });
+    return;
   }
 
   next();

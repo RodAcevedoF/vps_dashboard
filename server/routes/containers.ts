@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 // GET /api/containers - List all containers with stats
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const containers = await listContainers();
 
