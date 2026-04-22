@@ -1,14 +1,14 @@
 # Multi-stage Dockerfile for VPS Dashboard
 
 # Stage 1: Build frontend and backend
-FROM node:24-alpine AS builder
+FROM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json bun.lock ./
 COPY tsconfig*.json ./
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 # Copy all source code
 COPY server ./server
@@ -18,16 +18,16 @@ COPY rsbuild.config.ts ./rsbuild.config.ts
 COPY postcss.config.mjs ./postcss.config.mjs
 
 # Build both frontend (Rsbuild) and backend (TypeScript)
-RUN npm run build
+RUN bun run build
 
 # Stage 2: Production
-FROM node:20-alpine
+FROM oven/bun:1-alpine
 
 WORKDIR /app
 
 # Install production dependencies only
-COPY package*.json ./
-RUN npm ci --omit=dev
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
 
 # Copy built frontend from builder stage
 COPY --from=builder /app/dist ./dist
@@ -42,4 +42,4 @@ EXPOSE 3010
 ENV NODE_ENV=production
 
 # Start server (compiled JavaScript)
-CMD ["node", "dist-server/index.js"]
+CMD ["bun", "run", "dist-server/index.js"]
