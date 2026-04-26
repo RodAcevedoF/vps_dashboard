@@ -78,7 +78,7 @@ jobs:
             docker compose up -d --remove-orphans
 
             echo "Cleaning up old images..."
-            docker image prune -f
+            docker system prune -f
 
             echo "Deployment complete!"
             docker compose ps
