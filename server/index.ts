@@ -27,6 +27,11 @@ app.post('/api/auth/login', (req: Request, res: Response) => {
   }
 });
 
+// Health check endpoint
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
+});
+
 // Protected API routes
 app.use('/api/containers', authMiddleware, containersRouter);
 app.use('/api/health', authMiddleware, healthRouter);
@@ -39,11 +44,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(join(__dirname, '../dist/index.html'));
   });
 }
-
-// Health check endpoint
-app.get('/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', uptime: process.uptime() });
-});
 
 // Error handler
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

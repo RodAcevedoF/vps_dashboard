@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   dashboard:
     image: ghcr.io/rodacevedof/vps_dashboard:latest
